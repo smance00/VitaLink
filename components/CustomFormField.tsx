@@ -1,18 +1,20 @@
-'use client'
+'use client';
 
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import { FormFieldType } from "./forms/PatientForm";
 import Image from "next/image";
+import 'react-phone-number-input/style.css';
+import PhoneInput from "react-phone-number-input/input";
+// Import E164Number if needed
+// import { E164Number } from "some-package"; 
 
 interface CustomProps {
   control: Control<any>;
@@ -20,7 +22,7 @@ interface CustomProps {
   name: string;
   label?: string;
   placeholder?: string;
-  iconSrc?: string; // corrected the property name
+  iconSrc?: string;
   iconAlt?: string;
   disabled?: boolean;
   dateFormat?: string;
@@ -31,27 +33,41 @@ interface CustomProps {
 
 // Moved RenderField outside to avoid recreation on each render
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
-  switch (props.fieldType) { // Corrected to use props.fieldType
+  switch (props.fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex rounded-md border border-dark-500 bg-dark-400">
-          {props.iconSrc && (
-            <Image
-              src={props.iconSrc} // Corrected to use props.iconSrc
-              height={24}
-              width={24}
-              alt={props.iconAlt || 'icon'} // Corrected to use props.iconAlt
-              className="ml-2"
-            />
-          )}
+        <>
           <FormControl>
-            <Input
-              placeholder={props.placeholder} // Corrected to use props.placeholder
-              {...field}
-              className="shad-0"
+            <PhoneInput
+              defaultCountry="US"
+              placeholder={props.placeholder || 'Enter phone number'}
+              international
+              withCountryCallingCode
+              value={field.value as string | undefined}
+              onChange={field.onChange}
+              className="input-phone"
             />
           </FormControl>
-        </div>
+
+          <div className="flex rounded-md border border-dark-500 bg-dark-400 mt-2">
+            {props.iconSrc && (
+              <Image
+                src={props.iconSrc}
+                height={24}
+                width={24}
+                alt={props.iconAlt || 'icon'}
+                className="ml-2"
+              />
+            )}
+            <FormControl>
+              <Input
+                placeholder={props.placeholder}
+                {...field}
+                className="shad-0"
+              />
+            </FormControl>
+          </div>
+        </>
       );
 
     // Add more cases for other form field types here
@@ -68,7 +84,7 @@ const CustomFormField = (props: CustomProps) => {
   return (
     <FormField
       control={control}
-      name={name} // Use the name prop passed to the component
+      name={name}
       render={({ field }) => (
         <FormItem className="flex-1">
           {fieldType !== FormFieldType.CHECKBOX && label && (

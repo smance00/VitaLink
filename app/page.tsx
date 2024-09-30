@@ -5,7 +5,7 @@ import Link from 'next/link'; // Import Link if you're using next/link for navig
 export default function Home() {
   return (
     <div className="flex h-screen max-h-screen">
-      
+
       {/* Main container with scrolling disabled and centered content */}
       <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[496px] mx-auto"> {/* mx-auto centers the container */}
@@ -36,11 +36,11 @@ export default function Home() {
       
       {/* Side Image */}
       <Image
+        src="/path/to/side-image.jpg" 
         height={1000}
         width={1000}
         alt="patient"
-        className="side-img"
-        src="/path/to/side-image.jpg" // Add the actual image path here
+        className="side-img max-w-[390px]" // Add the actual image path here
       />
     </div>
   );
